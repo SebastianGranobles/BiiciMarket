@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicimarket</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bicimarket</h1>
+    </header>
+    
+    <nav>
+        <a href="#">Catálogo</a>
+        <a href="#" id="aboutBtn">Sobre Nosotros</a>
+        <a id="contactButton" class="whatsapp-button" href="https://wa.me/521234567890">📞 Contáctanos</a>
+    </nav>
+
+    <div class="container">
+        <div class="bicicletas">
+            <div class="bicicleta">
+                <h3>Bicicletas nacional</h3>
+                <img src="Bicicleta Nacional.png" alt="Bicicleta GW">
+                <div class="descripcion">Bicicleta GW de alta resistencia, ideal para todo tipo de terreno.</div>
+            </div>
+            <div class="bicicletas">
+                <div class="bicicleta">
+                    <h3>Bicicletas Shimano</h3>
+                    <img src="Bicicleta Shimano.jpg" alt="Bicicleta Shimano">
+                    <div class="descripcion">Bicicleta Shimano de alto rendimiento y durabilidad excepcional.</div>
+                </div>
+                <div class="bicicleta">
+                    <h3>Bicicletas GW</h3>
+                    <img src="Bicicleta Gw.jpg" alt="Bicicleta GW">
+                    <div class="descripcion">Diseño aerodinámico con frenos de disco y amortiguadores de alta calidad.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Sobre Nosotros</h2>
+            <p>Somos Bicimarker, una empresa comprometida con la movilidad sostenible.</p>
+            <p>Nuestra misión es ofrecer bicicletas de alta calidad al mejor precio.</p>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
