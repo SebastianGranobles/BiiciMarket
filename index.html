@@ -1,53 +1,309 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bicimarket</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>BiciMarket - Tienda de Bicicletas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/fec82d7a7f21b68cb0d02f537a11899e-icono-de-bicicleta-hipster.ico">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar {
+            background-color: #00796B;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .nav-link:hover {
+            color: #C8E6C9 !important;
+        }
+        .btn-contact {
+            background-color: #388E3C;
+            color: white;
+        }
+        .btn-contact:hover {
+            background-color: #2E7D32;
+        }
+        .card {
+            border: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .filter-container select {
+            width: auto;
+            padding: 5px;
+            font-size: 14px;
+        }
+        footer {
+            background-color: #00796B;
+            color: white;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            z-index: 1000;
+        }
+        .whatsapp-icon {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+        
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Bicimarket</h1>
+    <header class="text-center py-4" style="background-color: #004D40; color: white;">
+        <h1>CycloMart</h1>
+        <p>Tu mejor opción en bicicletas y repuestos</p>
     </header>
     
-    <nav>
-        <a href="#">Catálogo</a>
-        <a href="#" id="aboutBtn">Sobre Nosotros</a>
-        <a id="contactButton" class="whatsapp-button" href="https://wa.me/521234567890">📞 Contáctanos</a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">BiciMarket</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
+                    <li class="nav-item"><a class="nav-link" id="aboutBtn" href="#">Sobre Nosotros</a></li>
+                    <a href="p.html" class="btn btn-warning">🛒 Ver Carrito (<span id="cart-count">0</span>)</a>
+                </ul>
+            </div>
+        </div>
     </nav>
-
-    <div class="container">
-        <div class="bicicletas">
-            <div class="bicicleta">
-                <h3>Bicicletas nacional</h3>
-                <img src="Bicicleta Nacional.png" alt="Bicicleta GW">
-                <div class="descripcion">Bicicleta GW de alta resistencia, ideal para todo tipo de terreno.</div>
-            </div>
-            <div class="bicicletas">
-                <div class="bicicleta">
-                    <h3>Bicicletas Shimano</h3>
-                    <img src="Bicicleta Shimano.jpg" alt="Bicicleta Shimano">
-                    <div class="descripcion">Bicicleta Shimano de alto rendimiento y durabilidad excepcional.</div>
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">Sobre Nosotros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="bicicleta">
-                    <h3>Bicicletas GW</h3>
-                    <img src="Bicicleta Gw.jpg" alt="Bicicleta GW">
-                    <div class="descripcion">Diseño aerodinámico con frenos de disco y amortiguadores de alta calidad.</div>
+                <div class="modal-body">
+                    <p>Somos una empresa comprometida con ofrecer las mejores bicicletas y repuestos de alta calidad para todos los ciclistas.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="https://wa.me/573205063020" target="_blank" class="whatsapp-float">
+        <img src="img/wpp.png" alt="WhatsApp" class="whatsapp-icon">
+    </a>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Carrito de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-list"></tbody>
+                    </table>
+                    <p class="fw-bold text-end">Total: $<span id="cart-total">0</span></p>
+                    <button class="btn btn-danger" id="clear-cart">Vaciar Carrito</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="aboutModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Sobre Nosotros</h2>
-            <p>Somos Bicimarker, una empresa comprometida con la movilidad sostenible.</p>
-            <p>Nuestra misión es ofrecer bicicletas de alta calidad al mejor precio.</p>
+
+    <div class="container my-5" id="catalogo">
+        <h2 class="text-center mb-4">Nuestro Catálogo</h2>
+        <div class="filter-container">
+            <label for="filter" class="me-2">Filtrar por marca:</label>
+            <select class="form-select" id="filter">
+                <option value="all">Todas</option>
+                <option value="nacional">Nacional</option>
+                <option value="shimano">Shimano</option>
+                <option value="gw">GW</option>
+            </select>
+        </div>
+        <div class="row" id="bicycle-list">
+            <div class="col-md-4 bicycle" data-brand="nacional">
+                <div class="card">
+                    <img src="img/Bicicleta Nacional.png" alt="Bicicleta Nacional">
+                    <div class="card-body">
+                        <h5 class="card-title">Bicicleta Nacional</h5>
+                        <p class="card-text">Bicicleta GW de alta resistencia, ideal para todo tipo de terreno.</p>
+                        <p class="fw-bold">Precio: $1.500.000 COP</p>
+                        <button class="btn btn-success add-to-cart" data-name="Bicicleta Nacional" data-price="1500000">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 bicycle" data-brand="shimano">
+                <div class="card">
+                    <img src="img/Bicicleta Shimano.jpg" alt="Bicicleta Shimano">
+                    <div class="card-body">
+                        <h5 class="card-title">Bicicleta Shimano</h5>
+                        <p class="card-text">Bicicleta Shimano de alto rendimiento y durabilidad excepcional.</p>
+                        <p class="fw-bold">Precio: $2.200.000 COP</p>
+                        <button class="btn btn-success add-to-cart" data-name="Bicicleta Shimano" data-price="2200000">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 bicycle" data-brand="gw">
+                <div class="card">
+                    <img src="img/Bicicleta Gw.jpg" alt="Bicicleta GW">
+                    <div class="card-body">
+                        <h5 class="card-title">Bicicleta GW</h5>
+                        <p class="card-text">Diseño aerodinámico con frenos de disco y amortiguadores de alta calidad.</p>
+                        <p class="fw-bold">Precio: $1.800.000 COP</p>
+                        <button class="btn btn-success add-to-cart" data-name="Bicicleta GW" data-price="1800000">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="scripts.js"></script>
+    
+    <footer class="text-center py-3 mt-5">
+        &copy; 2025 BiciMarket - Todos los derechos reservados.
+    </footer>
+    
+    <script>
+        document.getElementById("aboutBtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            var aboutModal = new bootstrap.Modal(document.getElementById("aboutModal"));
+            aboutModal.show();
+        });
+    
+        // 🔹 Filtro de bicicletas (NO SE MODIFICÓ)
+        document.getElementById("filter").addEventListener("change", function() {
+            let selectedBrand = this.value;
+            let bicycles = document.querySelectorAll(".bicycle");
+    
+            bicycles.forEach(function(bicycle) {
+                if (selectedBrand === "all" || bicycle.getAttribute("data-brand") === selectedBrand) {
+                    bicycle.style.display = "block";
+                } else {
+                    bicycle.style.display = "none";
+                }
+            });
+        });
+    
+        // 🔹 Cargar carrito desde localStorage (corregido)
+        let cart = localStorage.getItem("cart");
+    
+        try {
+            cart = JSON.parse(cart) || [];
+            if (!Array.isArray(cart)) {
+                cart = []; // Si no es un array, se reinicia
+            }
+        } catch (error) {
+            console.error("Error al parsear el carrito:", error);
+            cart = [];
+        }
+    
+        function updateCart() {
+            let cartList = document.getElementById("cart-list");
+            let cartTotal = 0;
+            cartList.innerHTML = "";
+    
+            cart.forEach((item, index) => {
+                let total = item.price * item.quantity;
+                cartTotal += total;
+                cartList.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>$${item.price.toLocaleString("es-CO")}</td>
+                        <td>
+                            <button class='btn btn-danger btn-sm' onclick='updateQuantity(${index}, -1)'>-</button>
+                            <span class="mx-2">${item.quantity}</span>
+                            <button class='btn btn-success btn-sm' onclick='updateQuantity(${index}, 1)'>+</button>
+                        </td>
+                        <td>$${total.toLocaleString("es-CO")}</td>
+                        <td><button class='btn btn-danger btn-sm' onclick='removeFromCart(${index})'>🗑</button></td>
+                    </tr>
+                `;
+            });
+    
+            document.getElementById("cart-total").textContent = cartTotal.toLocaleString("es-CO");
+            document.getElementById("cart-count").textContent = cart.length;
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+    
+        function updateQuantity(index, change) {
+            if (cart[index].quantity + change > 0) {
+                cart[index].quantity += change;
+            } else {
+                cart.splice(index, 1);
+            }
+            updateCart();
+        }
+    
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+    
+        // 🔹 Botón para vaciar el carrito
+        document.getElementById("clear-cart").addEventListener("click", function() {
+            localStorage.removeItem("cart");
+            cart = [];
+            updateCart();
+        });
+    
+        // 🔹 Agregar producto al carrito (corregido)
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", function() {
+                let name = this.getAttribute("data-name");
+                let price = parseInt(this.getAttribute("data-price"));
+                
+                if (!Array.isArray(cart)) {
+                    cart = []; // Verificamos que cart sea un array antes de usar .find()
+                }
+    
+                let found = cart.find(item => item.name === name);
+    
+                if (found) {
+                    found.quantity += 1;
+                } else {
+                    cart.push({ name, price, quantity: 1 });
+                }
+    
+                localStorage.setItem("cart", JSON.stringify(cart));
+                updateCart();
+            });
+        });
+    
+        // 🔹 Verificar si estamos en p.html y actualizar carrito automáticamente
+        if (window.location.pathname.includes("p.html")) {
+            updateCart();
+        }
+    
+        updateCart();
+    </script>
+    
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
