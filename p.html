@@ -78,7 +78,6 @@
             <button class="btn btn-danger" onclick="clearCart()">Vaciar carrito</button>
             <button class="btn btn-success" onclick="showConfirmationModal()">Realizar Compra</button>
         </div>
-        <button id="download-pdf" class="btn btn-secondary mt-3" style="display: none;" onclick="downloadPDF()">Descargar Factura</button>
     </div>
 
     <!-- Modal de Confirmación -->
@@ -187,11 +186,10 @@
         }
 
         function checkout() {
-            document.getElementById("download-pdf").style.display = "block";
             downloadPDF();
-            alert("¡Gracias por tu compra! Tu pedido ha sido confirmado.");
-            clearCart();
-            new bootstrap.Modal(document.getElementById('confirmationModal')).hide();
+            alert("¡Compra realizada con éxito!");
+            clearCart(); // Vaciamos el carrito después de la compra.
+            location.reload(); // Recargamos la página.
         }
 
         function downloadPDF() {
