@@ -1,184 +1,221 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carrito de Compras</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="icon" type="image/png" href="img/fec82d7a7f21b68cb0d02f537a11899e-icono-de-bicicleta-hipster.ico"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
-    }
-    .container {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/fec82d7a7f21b68cb0d02f537a11899e-icono-de-bicicleta-hipster.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body onload="loadCart()">
-  <div class="container mt-5">
-    <h2>Carrito de Compras</h2>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Total</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="cart-list">
-        <tr><td colspan="5" class="text-center">Cargando...</td></tr>
-      </tbody>
-    </table>
-    <h4 class="text-end">Total: $<span id="cart-total">0</span></h4>
-
-    <div class="mb-3">
-      <label for="email" class="form-label">Correo electrónico:</label>
-      <input type="email" id="email" class="form-control" placeholder="Ingresa tu correo"/>
+    <div class="container mt-5">
+        <h2>Carrito de Compras</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="cart-list">
+                <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+            </tbody>
+        </table>
+        <h4 class="text-end">Total: $<span id="cart-total">0</span></h4>
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico:</label>
+            <input type="email" id="email" class="form-control" placeholder="Ingresa tu correo">
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre:</label>
+            <input type="text" id="name" class="form-control" placeholder="Ingresa tu nombre">
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="form-label">Género:</label>
+            <select id="gender" class="form-select">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="No definido">No definido</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Teléfono:</label>
+            <input type="tel" id="phone" class="form-control" placeholder="Ingresa tu número de teléfono">
+        </div>
+        <div class="mb-3">
+            <label for="payment-method" class="form-label">Método de pago:</label>
+            <select id="payment-method" class="form-select">
+                <option value="Nequi">Nequi</option>
+                <option value="Bancolombia">Bancolombia</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="PSE">PSE</option>
+                <option value="Efectivo">Efectivo</option>
+            </select>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a href="index.html" class="btn btn-primary">Volver a la tienda</a>
+            <button class="btn btn-danger" onclick="clearCart()">Vaciar carrito</button>
+            <button class="btn btn-success" onclick="showConfirmationModal()">Realizar Compra</button>
+        </div>
+        <button id="download-pdf" class="btn btn-secondary mt-3" style="display: none;" onclick="downloadPDF()">Descargar Factura</button>
     </div>
-    <div class="mb-3">
-      <label for="name" class="form-label">Nombre:</label>
-      <input type="text" id="name" class="form-control" placeholder="Ingresa tu nombre"/>
-    </div>
-    <div class="mb-3">
-      <label for="gender" class="form-label">Género:</label>
-      <select id="gender" class="form-select">
-        <option value="Masculino">Masculino</option>
-        <option value="Femenino">Femenino</option>
-        <option value="No definido">No definido</option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="phone" class="form-label">Teléfono:</label>
-      <input type="tel" id="phone" class="form-control" placeholder="Ingresa tu número de teléfono"/>
-    </div>
-    <div class="mb-3">
-      <label for="payment-method" class="form-label">Método de pago:</label>
-      <select id="payment-method" class="form-select">
-        <option value="Nequi">Nequi</option>
-        <option value="Bancolombia">Bancolombia</option>
-        <option value="Tarjeta">Tarjeta</option>
-        <option value="PSE">PSE</option>
-        <option value="Efectivo">Efectivo</option>
-      </select>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel">Confirmar Compra</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body" id="modal-body-summary"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-success" onclick="checkout()">Confirmar</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="d-flex justify-content-between">
-      <a href="index.html" class="btn btn-primary">Volver a la tienda</a>
-      <button class="btn btn-danger" onclick="clearCart()">Vaciar carrito</button>
-      <button class="btn btn-success" onclick="checkout()">Realizar Compra</button>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartContainer = document.getElementById("cart-list");
+            let totalElement = document.getElementById("cart-total");
+            cartContainer.innerHTML = "";
+            let total = 0;
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<tr><td colspan='5' class='text-center'>El carrito está vacío</td></tr>";
+            } else {
+                cart.forEach((item, index) => {
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>$${item.price.toLocaleString("es-CO")}</td>
+                        <td>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="decreaseQuantity(${index})">➖</button>
+                            ${item.quantity}
+                            <button class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity(${index})">➕</button>
+                        </td>
+                        <td>$${(item.quantity * item.price).toLocaleString("es-CO")}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">🗑</button></td>
+                    `;
+                    cartContainer.appendChild(row);
+                    total += item.quantity * item.price;
+                });
+            }
+            totalElement.textContent = total.toLocaleString("es-CO");
+        }
 
-    <button id="download-pdf" class="btn btn-secondary mt-3" style="display: none;" onclick="downloadPDF()">Descargar Factura</button>
-  </div>
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
 
-  <script>
-    function loadCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let cartContainer = document.getElementById("cart-list");
-      let totalElement = document.getElementById("cart-total");
-      cartContainer.innerHTML = "";
-      let total = 0;
+        function increaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart[index].quantity++;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
 
-      if (cart.length === 0) {
-        cartContainer.innerHTML = "<tr><td colspan='5' class='text-center'>El carrito está vacío</td></tr>";
-      } else {
-        cart.forEach((item, index) => {
-          let row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${item.name}</td>
-            <td>$${item.price.toLocaleString("es-CO")}</td>
-            <td>
-              <button class="btn btn-outline-secondary btn-sm" onclick="decreaseQuantity(${index})">➖</button>
-              ${item.quantity}
-              <button class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity(${index})">➕</button>
-            </td>
-            <td>$${(item.quantity * item.price).toLocaleString("es-CO")}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">🗑</button></td>
-          `;
-          cartContainer.appendChild(row);
-          total += item.quantity * item.price;
-        });
-      }
-      totalElement.textContent = total.toLocaleString("es-CO");
-    }
+        function decreaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+            } else {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
 
-    function clearCart() {
-      localStorage.removeItem("cart");
-      loadCart();
-    }
+        function clearCart() {
+            localStorage.removeItem("cart");
+            loadCart();
+        }
 
-    function removeFromCart(index) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      loadCart();
-    }
+        function showConfirmationModal() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                alert("El carrito está vacío.");
+                return;
+            }
+            let modalBody = document.getElementById("modal-body-summary");
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("phone").value;
+            let payment = document.getElementById("payment-method").value;
+            let total = document.getElementById("cart-total").textContent;
 
-    function increaseQuantity(index) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart[index].quantity += 1;
-      localStorage.setItem("cart", JSON.stringify(cart));
-      loadCart();
-    }
+            let summary = `<p><strong>Nombre:</strong> ${name}</p>
+                           <p><strong>Correo:</strong> ${email}</p>
+                           <p><strong>Teléfono:</strong> ${phone}</p>
+                           <p><strong>Método de pago:</strong> ${payment}</p>
+                           <p><strong>Total:</strong> $${total}</p>
+                           <hr>
+                           <p><strong>Productos:</strong></p>`;
+            cart.forEach(item => {
+                summary += `<p>${item.name} (x${item.quantity}) - $${item.price.toLocaleString("es-CO")}</p>`;
+            });
+            modalBody.innerHTML = summary;
+            new bootstrap.Modal(document.getElementById('confirmationModal')).show();
+        }
 
-    function decreaseQuantity(index) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      if (cart[index].quantity > 1) {
-        cart[index].quantity -= 1;
-      } else {
-        cart.splice(index, 1);
-      }
-      localStorage.setItem("cart", JSON.stringify(cart));
-      loadCart();
-    }
+        function checkout() {
+            document.getElementById("download-pdf").style.display = "block";
+            downloadPDF();
+            alert("¡Gracias por tu compra! Tu pedido ha sido confirmado.");
+            clearCart();
+            new bootstrap.Modal(document.getElementById('confirmationModal')).hide();
+        }
 
-    function checkout() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      if (cart.length === 0) {
-        alert("El carrito está vacío.");
-        return;
-      }
-      document.getElementById("download-pdf").style.display = "block";
-    }
-
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      let doc = new jsPDF();
-      let invoiceNumber = Math.floor(1000000000 + Math.random() * 9000000000);
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let y = 20;
-
-      doc.text(`Factura de Compra - #${invoiceNumber}`, 20, y);
-      y += 10;
-      doc.text("Empresa: CycloMart", 20, y);
-      y += 10;
-      doc.text("Teléfono: " + document.getElementById("phone").value, 20, y);
-      y += 10;
-      doc.text("Detalles de la compra:", 20, y);
-      y += 10;
-
-      cart.forEach(item => {
-        doc.text(`${item.name} - Cantidad: ${item.quantity} - Precio: $${item.price.toLocaleString("es-CO")}`, 20, y);
-        y += 10;
-      });
-
-      y += 10;
-      doc.text(`Total pagado: $${document.getElementById("cart-total").textContent}`, 20, y);
-      doc.save("factura.pdf");
-    }
-  </script>
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            let doc = new jsPDF();
+            let invoiceNumber = Math.floor(1000000000 + Math.random() * 9000000000);
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let y = 20;
+            doc.text(`Factura de Compra - #${invoiceNumber}`, 20, y);
+            y += 10;
+            doc.text("Empresa: CycloMart", 20, y);
+            y += 10;
+            doc.text("Teléfono: " + document.getElementById("phone").value, 20, y);
+            y += 10;
+            doc.text("Detalles de la compra:", 20, y);
+            y += 10;
+            cart.forEach(item => {
+                doc.text(`${item.name} - Cantidad: ${item.quantity} - Precio: $${item.price.toLocaleString("es-CO")}`, 20, y);
+                y += 10;
+            });
+            y += 10;
+            doc.text(`Total pagado: $${document.getElementById("cart-total").textContent}`, 20, y);
+            doc.save("factura.pdf");
+        }
+    </script>
 </body>
 </html>
